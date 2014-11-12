@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
+           http://www.springframework.org/schema/beans      http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context    http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/aop        http://www.springframework.org/schema/aop/spring-aop.xsd
+           http://www.springframework.org/schema/util		http://www.springframework.org/schema/util/spring-util.xsd
+		
+       ">
+
+	<util:properties id="onrampApplication" location="classpath:/onramp.properties" />
+	<context:property-placeholder
+		properties-ref="onrampApplication" order="1" ignore-unresolvable="true" />
+
+
+	<bean id="onramp_dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${database.connection.driverClass}" />
+		<property name="jdbcUrl" value="${database.connection.url}" />
+		<property name="user" value="${database.connection.username}" />
+		<property name="password" value="${database.connection.password}" />
+
+		<property name="minPoolSize" value="${database.connection.pool.minPoolSize}" />
+		<property name="initialPoolSize" value="${database.connection.pool.initialPoolSize}" />
+		<property name="maxPoolSize" value="${database.connection.pool.maxPoolSize}" />
+
+		<property name="maxIdleTime" value="${database.connection.pool.maxIdleTime}" />
+		<property name="maxStatementsPerConnection"
+			value="${database.connection.pool.maxStatementsPerConnection}" />
+
+		<property name="idleConnectionTestPeriod"
+			value="${database.connection.pool.idleConnectionTestPeriod}" />
+		<property name="preferredTestQuery"
+			value="${database.connection.pool.preferredTestQuery}" />
+		<property name="testConnectionOnCheckout" value="true" />
+		<property name="testConnectionOnCheckin" value="true" />
+
+	</bean>
+
+
+	<!-- ========== Aspect to detach entities returned by DAOs (to prevent converters 
+		from loading the entire database by lazy loading) ========== -->
+
+	<context:annotation-config />
+
+	<aop:aspectj-autoproxy proxy-target-class="false" />
+
+	<!-- ============ Hibernate ============= -->
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="onramp_dataSource" />
+		<property name="packagesToScan">
+			<list>
+				<value>com.mob.model</value>
+				<value>com.mob.repository</value>
+			</list>
+		</property>
+		<property name="jpaPropertyMap">
+			<map>
+				<entry key="hibernate.dialect" value="${database.hibernate.dialect}" />
+				<entry key="hibernate.show_sql" value="${database.hibernate.showSql}" />
+				<entry key="hibernate.use_sql_comments" value="${database.hibernate.useSqlComments}" />
+				<entry key="hibernate.format_sql" value="${database.hibernate.formatSql}" />
+			</map>
+		</property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+	</bean>
+
+	<bean id="sharedEntityManager"
+		class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="persistenceUnitUtil" factory-bean="entityManagerFactory"
+		factory-method="getPersistenceUnitUtil" />
+	<bean id="applicationContext" class="com.mob.spring.mvc.context.ApplicationContextProvider" />
+
+<bean id="servletContextAttributeExporter" class="org.springframework.web.context.support.ServletContextAttributeExporter">
+        <property name="attributes">
+            <map>
+                <entry key="FacebookClient" value-ref="facebookClient" />
+                <entry key="TwitterClient" value-ref="twitterClient" />
+                <entry key="FormClient" value-ref="formClient" />
+                <entry key="BasicAuthClient" value-ref="basicAuthClient" />
+                <entry key="CasClient" value-ref="casClient" />
+                <entry key="Saml2Client" value-ref="samlClient" />
+            </map>
+        </property>
+    </bean>
+</beans>
+

@@ -1,0 +1,119 @@
+.ul {
+	list-style: none;
+}
+
+a {
+	color: rgb(74, 74, 74);
+}
+
+.circle {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	display: inline-block;
+	margin-left:-45px;
+	vertical-align: middle;
+}
+
+.circle-red {
+	background-color: rgb(160, 20, 20);
+}
+
+.circle-green {
+	background-color: rgb(29, 129, 63);
+}
+
+.circle-gray {
+	background-color: gray;
+}
+
+.broad {
+	height: 60px;
+	background-color: rgb(237, 237, 237);
+	color: gray;
+	padding: 10px 10px 10px 10px;
+}
+
+.header {
+	height: 40px;
+	color: rgb(125, 125, 125);
+	padding: 10px 10px 10px 10px;
+}
+
+.innerHeader {
+	padding: 5px 5px 5px 5px;
+}
+
+.padRit {
+	padding-right: 10px;
+}
+
+.main {
+	color: gray;
+	/* height: 400px; */
+	border: 2px solid rgb(220, 220, 220);
+	background-color: rgb(237, 237, 237);
+}
+
+/* .userList {
+	padding-top: 5px;
+	padding-left: 40px;
+} */
+.sideOne {
+	padding-left: 30px;
+}
+
+.sideTwo {
+	padding-left: 60px;
+}
+
+.hr {
+	border-top: dotted 1px;
+	padding: 0px;
+	margin: 0px;
+	padding-bottom: 8px;
+}
+
+@media screen and (max-width: 767px) {
+	#changeAfterResize {
+		padding: 10px;
+	}
+}
+
+/* sdas */
+.align {
+	text-align: center;
+}
+
+.pad_top_row {
+	padding-top: 10px;
+}
+
+.propic {
+	height: 140px;
+	width: 140px;
+}
+
+.padtop {
+	padding-top: 25px;
+}
+
+.ul_sub {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+.userProButton {
+	width: 160px;
+	background-color: rgb(85, 85, 85);
+	color: white;
+	margin-bottom: 5px;
+}
+
+
+
+.noBottom {
+	border-bottom: none;
+}
+

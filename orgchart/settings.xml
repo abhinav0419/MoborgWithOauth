@@ -1,0 +1,115 @@
+ <settings xmlns="http://maven.apache.org/SETTINGS/1.1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
+
+    <servers>
+	
+        <server>
+            <id>xaton</id>
+            <username>deployment</username>
+            <password>x@t0n!te-xW@y</password>
+        </server>
+		
+		<server>
+            <id>xaton-group</id>
+            <username>deployment</username>
+            <password>x@t0n!te-xW@y</password>
+        </server>
+		
+        <server>
+            <id>xaton-snapshot</id>
+            <username>deployment</username>
+            <password>x@t0n!te-xW@y</password>
+        </server>
+		
+		<server>
+            <id>public</id>
+            <username>develop</username>
+            <password>Zno1OYZUwjfD</password>
+            <filePermissions>664</filePermissions>
+            <directoryPermissions>775</directoryPermissions>
+        </server>
+		
+		<server>
+			<id>kpn-hotspot.snapshots</id>
+			<username>admin</username>
+			<password>qaz</password>
+		</server>
+		
+		
+    </servers>
+
+    <activeProfiles>
+        <activeProfile>xaton-group</activeProfile>
+
+        <!--
+            This profile is automatically activated in pom.xml, but because of http://jira.codehaus.org/browse/MNG-3229
+            this doesn't work when using a settings file with "-s".
+            Activating the profile also here, is a workaround for this maven limitation.
+        -->
+        <!-- <activeProfile>development</activeProfile>  -->
+    </activeProfiles>
+
+		
+    <profiles>
+        <profile>
+
+            <id>xaton-group</id>
+
+            <repositories>
+                <repository>
+                    <id>xaton-group</id>
+                    <url>http://nexus.xaton.com:16082/nexus/content/repositories/xaton-group</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                </repository>
+				
+				<repository>
+					 <id>apache-incubator</id>
+					 <name>Aapche Incubator</name>
+					 <url>https://repository.jboss.org/nexus/content/repositories/apache-incubator</url>
+				</repository>
+				
+			    <repository>
+					  <id>apache-snapshots</id>
+					  <name>Apache SNAPSHOT Repository</name>
+					  <url>http://repository.apache.org/snapshots/</url>
+					  <snapshots>
+						 <enabled>true</enabled>
+					  </snapshots>
+			    </repository>
+		   
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>xaton-group</id>
+                    <url>http://nexus.xaton.com:16082/nexus/content/repositories/xaton-group</url>
+                    <releases><enabled>true</enabled></releases>
+                    <snapshots><enabled>true</enabled></snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+
+            <properties>
+                <downloadSources>true</downloadSources>
+                <downloadJavadocs>true</downloadJavadocs>
+            </properties>
+        </profile>
+		
+		<!--
+		<profile>
+			  <id>override-jetty-port</id>
+			  
+			   <activation>
+				 <activeByDefault>true</activeByDefault>
+				</activation>
+				
+				<properties>
+					<jetty.port>6060</jetty.port>
+				</properties>
+	
+		 </profile>
+		-->
+		
+    </profiles>
+
+</settings>

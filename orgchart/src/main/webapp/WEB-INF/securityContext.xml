@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider
+			ref="clientProvider" />
+	</security:authentication-manager>
+
+	<!-- urls and security configuration -->
+
+   <security:http pattern="/**" entry-point-ref="googleEntryPoint" use-expressions="true">
+       
+<!--         <security:intercept-url pattern="/resource" access="permitAll()" />
+    </security:http>
+    
+    <security:http use-expressions="true" pattern="/**" entry-point-ref="googleEntryPoint"> -->
+     <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
+      <security:intercept-url pattern="/google/oauthRedirect" access="isAuthenticated()" />
+        <security:intercept-url pattern="/registration" access="isAuthenticated()" />
+        <security:intercept-url pattern="/updateprofile" access="isAuthenticated()" />
+        <security:intercept-url pattern="/getuserprofile" access="isAuthenticated()" />
+        <security:intercept-url pattern="/getuserpro" access="isAuthenticated()" />
+        <security:intercept-url pattern="/getuserpro" access="isAuthenticated()" />
+        <security:intercept-url pattern="/mobmap" access="isAuthenticated()" />
+        <security:intercept-url pattern="/persistuserlocation" access="isAuthenticated()" />
+        <security:intercept-url pattern="/fetchUserLatLong" access="isAuthenticated()" />
+        <security:intercept-url pattern="/loadmarker" access="isAuthenticated()" />
+        <security:intercept-url pattern="/getupdateprofile" access="isAuthenticated()" />
+        <security:intercept-url pattern="/getuserprofilemap" access="isAuthenticated()" />
+        <security:intercept-url pattern="/loadUsersInBound" access="isAuthenticated()" />
+        <security:intercept-url pattern="/menu" access="isAuthenticated()" />
+        <security:intercept-url pattern="/moborgchart" access="isAuthenticated()" />
+        <security:intercept-url pattern="/nup" access="isAuthenticated()" />
+        <security:intercept-url pattern="/searchController" access="isAuthenticated()" />
+        <!-- <security:intercept-url pattern="/oauthRedirect" access="permitAll()" /> -->
+        <security:intercept-url pattern="/logout" access="permitAll()" />
+        <security:intercept-url pattern="/resource/*" access="permitAll()" />
+        <security:intercept-url pattern="/resource/img/*" access="permitAll()" />
+        <security:intercept-url pattern="/**" access="permitAll()" />
+        <security:logout />
+    </security:http>
+  <!--   <security:http pattern="/form/**" entry-point-ref="formEntryPoint">
+        <security:intercept-url pattern="/form/**" access="IS_AUTHENTICATED_FULLY" />
+    </security:http>
+
+    <security:http pattern="/basicauth/**" entry-point-ref="basicAuthEntryPoint">
+        <security:intercept-url pattern="/basicauth/**" access="IS_AUTHENTICATED_FULLY" />
+    </security:http>
+
+    <security:http pattern="/saml/**" entry-point-ref="samlEntryPoint">
+        <security:intercept-url pattern="/saml/**" access="IS_AUTHENTICATED_FULLY" />
+    </security:http>
+
+    <security:http use-expressions="true" pattern="/**" entry-point-ref="casEntryPoint">
+        <security:custom-filter after="CAS_FILTER" ref="clientFilter" />
+        <security:intercept-url pattern="/cas/restricted.jsp" access="hasRole('ADMIN')" />
+        <security:intercept-url pattern="/cas/**" access="isAuthenticated()" />
+        <security:intercept-url pattern="/**" access="permitAll()" />
+        <security:logout />
+    </security:http> -->
+	<!-- <security:http use-expressions="true" entry-point-ref="googleEntryPoint">
+		<security:custom-filter after="CAS_FILTER" ref="clientFilter" />
+		<security:intercept-url pattern="/resource/**"
+			access="permitAll" />
+			<security:intercept-url pattern="/oauthRedirect"
+			access="isFullyAuthenticated()" />
+			<security:intercept-url pattern="/j_spring_security_check"
+			access="isFullyAuthenticated()" />
+		
+	</security:http> -->
+	<!-- <security:http entry-point-ref="googleEntryPoint">
+		<security:custom-filter after="CAS_FILTER" ref="clientFilter" />
+		<security:intercept-url pattern="/resource/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/"
+			access="IS_AUTHENTICATED_FULLY" />
+		<security:intercept-url pattern="/oauthRedirect"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/mobmap"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/moborgchart"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/getupdateprofile"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<security:intercept-url pattern="/logout"
+			access="IS_AUTHENTICATED_FULLY" />
+	</security:http> -->
+
+<!-- entry points -->
+    <bean id="facebookEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="facebookClient" />
+    </bean>
+
+    <bean id="googleEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="googleClient" />
+    </bean>
+
+    <bean id="twitterEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="twitterClient" />
+    </bean>
+
+    <bean id="formEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="formClient" />
+    </bean>
+
+    <bean id="basicAuthEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="basicAuthClient" />
+    </bean>
+
+    <bean id="casEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="casClient" />
+    </bean>
+
+    <bean id="samlEntryPoint" class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+        <property name="client" ref="samlClient" />
+    </bean>
+<!-- 
+	<bean id="googleEntryPoint"
+		class="org.pac4j.springframework.security.web.ClientAuthenticationEntryPoint">
+		<property name="client" ref="googleClient" />
+	</bean> -->
+
+	<!-- clients definition -->
+  <bean id="googleClient" class="org.pac4j.oauth.client.Google2Client">
+		<property name="key"
+			value="151623693832-k9ktvtpdbsh7pqsclmta16kausuv6gdb.apps.googleusercontent.com" />
+			<property name="secret" value="79CVy1AvQqppFz5HgFS3DgXU" />
+<!-- local <property name="key"
+			value="151623693832-8e3m97fbljfeqk3l8cllrer7lv3qas4m.apps.googleusercontent.com" /> 
+			<property name="secret" value="15urGxt1WfZEy8Z8eGywTJd-" /> -->
+		
+	</bean>
+
+    <bean id="facebookClient" class="org.pac4j.oauth.client.FacebookClient">
+        <property name="key" value="145278422258960" />
+        <property name="secret" value="be21409ba8f39b5dae2a7de525484da8" />
+    </bean>
+
+    <bean id="twitterClient" class="org.pac4j.oauth.client.TwitterClient">
+        <property name="key" value="CoxUiYwQOSFDReZYdjigBA" />
+        <property name="secret" value="2kAzunH5Btc4gRSaMr7D7MkyoJ5u1VzbOOzE8rBofs" />
+    </bean>
+
+	<bean id="usernamePasswordAuthenticator" class="org.pac4j.http.credentials.SimpleTestUsernamePasswordAuthenticator" />
+
+    <bean id="formClient" class="org.pac4j.http.client.FormClient">
+        <!-- <property name="loginUrl" value="http://localhost:8080/theForm.jsp" /> -->
+        <property name="loginUrl" value="http://moborg.mobproto.com:8080/orgchart/" />
+        <property name="usernamePasswordAuthenticator" ref="usernamePasswordAuthenticator" />
+    </bean>
+
+    <bean id="basicAuthClient" class="org.pac4j.http.client.BasicAuthClient">
+        <property name="usernamePasswordAuthenticator" ref="usernamePasswordAuthenticator" />
+    </bean>
+
+    <bean id="samlClient" class="org.pac4j.saml.client.Saml2Client">
+        <property name="keystorePath" value="resource:samlKeystore.jks" />
+        <property name="keystorePassword" value="pac4j-demo-passwd" />
+        <property name="privateKeyPassword" value="pac4j-demo-passwd" />
+        <property name="idpMetadataPath" value="resource:testshib-providers.xml" />
+    </bean>
+
+    <bean id="casClient" class="org.pac4j.cas.client.CasClient">
+        <property name="casLoginUrl" value="https://freeuse1.casinthecloud.com/leleujgithub/login" />
+        <property name="casPrefixUrl" value="https://freeuse1.casinthecloud.com/leleujgithub/p3" />
+    </bean>
+
+    <bean id="clients" class="org.pac4j.core.client.Clients">
+        <property name="callbackUrl" value="http://moborg.mobproto.com:8080/orgchart/oauthRedirect" />
+    <!-- <property name="callbackUrl" value="http://localhost:8080/orgchart/oauthRedirect" />  -->
+        <property name="clients">
+        	<list>
+        		<ref bean="facebookClient" />
+        		<ref bean="twitterClient" />
+        		<ref bean="googleClient" />
+        		<ref bean="formClient" />
+        		<ref bean="basicAuthClient" />
+        		<ref bean="casClient" />
+        		<ref bean="samlClient" />
+        	</list>
+        </property>
+    </bean>
+	
+
+
+	<!-- <bean id="clients" class="org.pac4j.core.client.Clients">
+		<property name="callbackUrl" value="http://localhost:8080/orgchart/oauthRedirect" />
+		<property name="clients">
+			<list>
+				<ref bean="googleClient" />
+			</list>
+		</property>
+	</bean> -->
+
+	<!-- common to all clients -->
+	<!-- <bean id="clientFilter"
+		class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
+		<constructor-arg value="/oauthRedirect" />
+		<property name="clients" ref="clients" />
+		<property name="sessionAuthenticationStrategy" ref="sas" />
+		<property name="authenticationManager" ref="authenticationManager" />
+	</bean>
+
+	<bean id="clientProvider"
+		class="org.pac4j.springframework.security.authenticationa.ClientAuthenticationProvider">
+		<property name="clients" ref="clients" />
+	</bean>
+
+	<bean id="httpSessionRequestCache"
+		class="org.springframework.security.web.savedrequest.HttpSessionRequestCache" />
+
+	<bean id="sas"
+		class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy" />
+</beans> -->
+<!-- common to all clients -->
+    <bean id="clientFilter" class="org.pac4j.springframework.security.web.ClientAuthenticationFilter">
+    	<constructor-arg value="/oauthRedirect"/>
+        <property name="clients" ref="clients" />
+        <property name="sessionAuthenticationStrategy" ref="sas" />
+        <property name="authenticationManager" ref="authenticationManager" />
+    </bean>
+
+    <bean id="clientProvider" class="org.pac4j.springframework.security.authentication.ClientAuthenticationProvider">
+        <property name="clients" ref="clients" />
+    </bean>
+    
+    <bean id="httpSessionRequestCache" class="org.springframework.security.web.savedrequest.HttpSessionRequestCache" />
+    
+    <bean id="sas" class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy" />
+</beans>

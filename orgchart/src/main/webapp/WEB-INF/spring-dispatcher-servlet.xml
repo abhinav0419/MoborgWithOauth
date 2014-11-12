@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd  
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context.xsd     
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<mvc:annotation-driven />
+
+	<context:annotation-config />
+
+
+	<!-- mapping the styling resources to the WEB-INF -->
+	<mvc:resources location="WEB-INF/resource/**" mapping="/resource/**"></mvc:resources>
+	<!-- <mvc:view-controller path="/" view-name="login"/> -->
+
+	<!--use this mapping when you dont use annotation -->
+	<!-- Declaring handler mapping class -->
+	<!-- <bean id="handlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"></bean> 
+		<bean id="/" class="com.spring.mvc.controller.HelloController"></bean> -->
+
+
+	<!-- Declaring view resolver class -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" 
+			/> -->
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- Controller class -->
+
+	<context:component-scan base-package="com.mob.controller" />
+	<context:component-scan base-package="com.mob.customexception.handler" />
+
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+
+		<!-- setting maximum upload size -->
+		<property name="maxUploadSize" value="300000" />
+	</bean>
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="/WEB-INF/errormessage" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+
+</beans>
